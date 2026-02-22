@@ -1,3 +1,4 @@
+
 <template>
     <div class="card">
         <div class="header">
@@ -6,9 +7,7 @@
                 {{ loading ? "Refreshing..." : "Refresh" }}
             </button>
 
-            <button class="btn" @click="createUsers" :disabled="loading">
-                {{ loading ? "Refreshing..." : "Create User" }}
-            </button>
+            <button @click="goCreate">Create User</button>
         </div>
 
         <p v-if="loading">Loading users...</p>
@@ -47,16 +46,21 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import api from "../services/api";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
+function goCreate() {
+  router.push("/users/create");
+}
 const users = ref([]);
 const loading = ref(true);
 const error = ref("");
 
 const emit = defineEmits(["go-create"]);
 
-function createUsers() {
-    emit("go-create");
-}
+// function createUsers() {
+//     emit("go-create");
+// }
 
 function formatDate(value) {
     if (!value) return "-";
