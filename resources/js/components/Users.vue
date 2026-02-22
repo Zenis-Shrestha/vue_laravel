@@ -33,10 +33,11 @@
                     <td>{{ u.name }}</td>
                     <td>{{ u.email }}</td>
                     <td>{{ formatDate(u.created_at) }}</td>
-                    <td>
-                        <button class="btn" @click="viewDetails(u)">Details</button>
-                        <button class="btn danger" @click="deleteUser(u.id)">Delete</button>
-                    </td>
+                 <td>
+  <button class="btn edit" @click="editUser(u.id)">Edit</button>
+  <button class="btn details" @click="viewDetails(u)">Details</button>
+  <button class="btn danger" @click="deleteUser(u.id)">Delete</button>
+</td>
                 </tr>
             </tbody>
         </table>
@@ -58,9 +59,9 @@ const error = ref("");
 
 const emit = defineEmits(["go-create"]);
 
-// function createUsers() {
-//     emit("go-create");
-// }
+function editUser(id) {
+  router.push(`/users/${id}/edit`);
+}
 
 function formatDate(value) {
     if (!value) return "-";
@@ -161,5 +162,23 @@ onMounted(fetchUsers);
 .danger {
     background: #ef4444;
     color: white;
+}
+
+.edit {
+  background: #3b82f6;
+  color: white;
+}
+
+.edit:hover {
+  background: #2563eb;
+}
+
+.details {
+  background: #10b981;
+  color: white;
+}
+
+.details:hover {
+  background: #059669;
 }
 </style>
