@@ -8,25 +8,27 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-     use HasRoles;
+    use HasRoles;
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasApiTokens;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
- protected $fillable = [
-    'name',
-    // 'age',
-    'email',
-    'password',
-    'display_image',
-];
+    protected $fillable = [
+        'name',
+        // 'age',
+        'email',
+        'password',
+        'display_image',
+    ];
 
     /**
      * The attributes that should be hidden for serialization.

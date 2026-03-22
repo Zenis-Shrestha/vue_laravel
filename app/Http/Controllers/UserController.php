@@ -46,7 +46,7 @@ class UserController extends Controller
         return response()->json(User::findOrFail($id));
     }
 
-    public function update(Request $request, $user)
+  public function update(Request $request, User $user)
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
