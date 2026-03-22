@@ -122,6 +122,7 @@
 import { ref, computed, onMounted } from "vue";
 import api from "../services/api";
 import { useRouter } from "vue-router";
+import {toastState} from "../stores/toast";
 
 const router = useRouter();
 const users = ref([]);
@@ -181,20 +182,15 @@ async function fetchUsers() {
 }
 
 async function deleteUser() {
-    if (!deleteTarget.value) return;
-    deleting.value = true;
     try {
         await api.delete(`/users/${deleteTarget.value.id}`);
+        toastState.success('User deleted successfully!');  // ✅
         deleteTarget.value = null;
         fetchUsers();
     } catch (e) {
-        error.value = "Failed to delete user.";
-        deleteTarget.value = null;
-    } finally {
-        deleting.value = false;
+        toastState.error('Failed to delete user.');        // ✅
     }
 }
-
 onMounted(fetchUsers);
 </script>
 

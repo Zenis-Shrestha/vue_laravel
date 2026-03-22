@@ -7,67 +7,88 @@ import Dashboard from '../views/Dashboard.vue';
 import Users from '../views/Users.vue';
 import UserCreate from '../views/UserCreate.vue';
 import Aboutme from '../views/Aboutme.vue';
+import Chat from '../views/Chat.vue';
+import UserEdit from '../views/User/Edit.vue';
+import UserDetails from '../views/User/Details.vue';
 
 const routes = [
-  {
-    path: '/',
-    redirect: '/dashboard'
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login,
-    meta: { requiresGuest: true }
-  },
-  {
-    path: '/register',
-    name: 'Register',
-    component: Register,
-    meta: { requiresGuest: true }
-  },
-  {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: Dashboard,
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/users',
-    name: 'Users',
-    component: Users,
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/users/create',
-    name: 'UserCreate',
-    component: UserCreate,
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/about-me',
-    name: 'AboutMe',
-    component: Aboutme,
-    meta: { requiresAuth: true }
-  }
+    {
+        path: '/',
+        redirect: '/dashboard'
+    },
+    {
+        path: '/login',
+        name: 'Login',
+        component: Login,
+        meta: { requiresGuest: true }
+    },
+    {
+        path: '/register',
+        name: 'Register',
+        component: Register,
+        meta: { requiresGuest: true }
+    },
+    {
+        path: '/dashboard',
+        name: 'Dashboard',
+        component: Dashboard,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/users',
+        name: 'Users',
+        component: Users,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/users/create',
+        name: 'UserCreate',
+        component: UserCreate,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/about-me',
+        name: 'AboutMe',
+        component: Aboutme,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/chat',
+        name: 'Chat',
+        component: Chat,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/users/:id/edit',
+        name: 'UserEdit',
+        component: UserEdit,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/users/:id/details',
+        name: 'UserDetails',
+        component: UserDetails,
+        meta: { requiresAuth: true }
+    },
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes
+    history: createWebHistory(),
+    routes
 });
 
 // Route guard
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token');
-  const isAuthenticated = !!token;
+    const token = localStorage.getItem('token');
+    const isAuthenticated = !!token;
 
-  if (to.meta.requiresAuth && !isAuthenticated) {
-    next('/login');
-  } else if (to.meta.requiresGuest && isAuthenticated) {
-    next('/dashboard');
-  } else {
-    next();
-  }
+    if (to.meta.requiresAuth && !isAuthenticated) {
+        next('/login');
+    } else if (to.meta.requiresGuest && isAuthenticated) {
+        next('/dashboard');
+    } else {
+        next();
+    }
 });
 
 export default router;

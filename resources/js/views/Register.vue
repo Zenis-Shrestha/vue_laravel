@@ -1,76 +1,79 @@
 <template>
     <div class="auth-wrapper">
-        <div class="auth-sidebar">
-            <div class="geo-circle geo-1"></div>
-            <div class="geo-circle geo-2"></div>
-            <div class="sidebar-content">
-                <div class="sidebar-logo">VL</div>
-                <h2 class="sidebar-title">Join us today</h2>
-                <p class="sidebar-sub">Create your account and start managing your users right away.</p>
+        <div class="auth-card">
+
+            <!-- Logo -->
+            <div class="card-logo">
+                <div class="logo-icon">LVL</div>
+                <span class="logo-text">Learning Vue Laravel</span>
             </div>
-        </div>
 
-        <div class="auth-panel">
-            <div class="panel-inner">
-                <h1 class="panel-title">Create account</h1>
-                <p class="panel-sub">Fill in your details to get started</p>
+            <h1 class="card-title">Create account</h1>
+            <p class="card-sub">Fill in your details to get started</p>
 
-                <form @submit.prevent="register">
+            <form @submit.prevent="register">
+
+                <div class="form-group">
+                    <label class="form-label">Full name</label>
+                    <input
+                        v-model.trim="form.name"
+                        type="text"
+                        class="form-input"
+                        placeholder="John Doe"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email address</label>
+                    <input
+                        v-model.trim="form.email"
+                        type="email"
+                        class="form-input"
+                        placeholder="you@example.com"
+                    />
+                </div>
+
+                <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label">Full name</label>
+                        <label class="form-label">Password</label>
                         <input
-                            v-model.trim="form.name"
-                            type="text"
+                            v-model="form.password"
+                            type="password"
                             class="form-input"
-                            placeholder="John Doe"
+                            placeholder="Min. 8 characters"
                         />
                     </div>
-
                     <div class="form-group">
-                        <label class="form-label">Email address</label>
+                        <label class="form-label">Confirm password</label>
                         <input
-                            v-model.trim="form.email"
-                            type="email"
+                            v-model="form.password_confirmation"
+                            type="password"
                             class="form-input"
-                            placeholder="you@example.com"
+                            placeholder="Repeat password"
                         />
                     </div>
+                </div>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Password</label>
-                            <input
-                                v-model="form.password"
-                                type="password"
-                                class="form-input"
-                                placeholder="Min. 8 characters"
-                            />
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Confirm password</label>
-                            <input
-                                v-model="form.password_confirmation"
-                                type="password"
-                                class="form-input"
-                                placeholder="Repeat password"
-                            />
-                        </div>
-                    </div>
+                <div v-if="error" class="error-msg">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    {{ error }}
+                </div>
 
-                    <p v-if="error" class="error-msg">{{ error }}</p>
-                    <p v-if="success" class="success-msg">{{ success }}</p>
+                <div v-if="success" class="success-msg">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    {{ success }}
+                </div>
 
-                    <button type="submit" class="submit-btn" :disabled="loading">
-                        <span v-if="loading" class="spinner"></span>
-                        {{ loading ? 'Creating account...' : 'Create account' }}
-                    </button>
-                </form>
+                <button type="submit" class="submit-btn" :disabled="loading">
+                    <span v-if="loading" class="spinner"></span>
+                    {{ loading ? 'Creating account...' : 'Create account' }}
+                </button>
+            </form>
 
-                <p class="form-footer">
-                    Already have an account?
-                    <router-link to="/login" class="link">Sign in</router-link>
-                </p>
-            </div>
+            <p class="card-footer">
+                Already have an account?
+                <router-link to="/login" class="link">Sign in</router-link>
+            </p>
         </div>
     </div>
 </template>
@@ -112,18 +115,12 @@ async function register() {
 
     try {
         await api.post("/register", form);
-
         toast.success("Registration successful! Please login.");
-
         form.name = "";
         form.email = "";
         form.password = "";
         form.password_confirmation = "";
-
-        setTimeout(() => {
-            router.push("/login");
-        }, 1000);
-
+        setTimeout(() => { router.push("/login"); }, 1000);
     } catch (e) {
         const msg = getErrorMessage(e);
         error.value = msg;
@@ -135,98 +132,72 @@ async function register() {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Serif+Display&display=swap');
 
 * { box-sizing: border-box; }
 
 .auth-wrapper {
     min-height: 100vh;
     display: flex;
-    font-family: 'DM Sans', sans-serif;
+    align-items: center;
+    justify-content: center;
     background: #f0f4f8;
+    padding: 24px;
+    font-family: 'DM Sans', sans-serif;
 }
 
-.auth-sidebar {
-    width: 300px;
-    background: #0C447C;
-    display: flex;
-    align-items: flex-end;
-    padding: 48px 40px;
-    position: relative;
-    overflow: hidden;
-    flex-shrink: 0;
-}
-
-.geo-circle {
-    position: absolute;
-    border-radius: 50%;
-    border: 32px solid rgba(255, 255, 255, 0.07);
-}
-.geo-1 { width: 260px; height: 260px; bottom: -60px; right: -60px; }
-.geo-2 { width: 140px; height: 140px; top: -30px; left: -30px; }
-
-.sidebar-content { position: relative; z-index: 1; }
-
-.sidebar-logo {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.15);
-    color: #fff;
-    font-weight: 500;
-    font-size: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 28px;
-    letter-spacing: 0.05em;
-}
-
-.sidebar-title {
-    font-family: 'DM Serif Display', serif;
-    color: #fff;
-    font-size: 28px;
-    font-weight: 400;
-    line-height: 1.3;
-    margin: 0 0 12px;
-}
-
-.sidebar-sub {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 14px;
-    line-height: 1.7;
-    margin: 0;
-}
-
-.auth-panel {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 48px 32px;
-}
-
-.panel-inner {
+.auth-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 40px 36px;
     width: 100%;
-    max-width: 420px;
+    max-width: 460px;
 }
 
-.panel-title {
+.card-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+
+.logo-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: #185FA5;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.03em;
+}
+
+.logo-text {
+    font-size: 15px;
+    font-weight: 500;
+    color: #1a202c;
+}
+
+.card-title {
     font-family: 'DM Serif Display', serif;
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 400;
     color: #1a202c;
     margin: 0 0 6px;
 }
 
-.panel-sub {
+.card-sub {
     font-size: 14px;
     color: #718096;
-    margin: 0 0 32px;
+    margin: 0 0 28px;
 }
 
 .form-group {
-    margin-bottom: 18px;
+    margin-bottom: 16px;
 }
 
 .form-row {
@@ -241,8 +212,8 @@ async function register() {
     font-weight: 500;
     color: #4a5568;
     margin-bottom: 6px;
-    letter-spacing: 0.05em;
     text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .form-input {
@@ -264,23 +235,29 @@ async function register() {
 }
 
 .error-msg {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-size: 13px;
-    color: #e53e3e;
-    margin: -4px 0 16px;
-    padding: 10px 14px;
+    color: #c53030;
     background: #fff5f5;
+    border: 1px solid #fed7d7;
     border-radius: 8px;
-    border-left: 3px solid #e53e3e;
+    padding: 10px 14px;
+    margin-bottom: 16px;
 }
 
 .success-msg {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-size: 13px;
     color: #276749;
-    margin: -4px 0 16px;
-    padding: 10px 14px;
     background: #f0fff4;
+    border: 1px solid #9ae6b4;
     border-radius: 8px;
-    border-left: 3px solid #38a169;
+    padding: 10px 14px;
+    margin-bottom: 16px;
 }
 
 .submit-btn {
@@ -307,18 +284,17 @@ async function register() {
 .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
 
 .spinner {
-    width: 16px;
-    height: 16px;
+    width: 15px;
+    height: 15px;
     border: 2px solid rgba(255,255,255,0.3);
     border-top-color: #fff;
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
     flex-shrink: 0;
 }
-
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.form-footer {
+.card-footer {
     margin-top: 20px;
     font-size: 13px;
     color: #718096;
@@ -332,9 +308,8 @@ async function register() {
 }
 .link:hover { text-decoration: underline; }
 
-@media (max-width: 640px) {
-    .auth-sidebar { display: none; }
-    .auth-panel { padding: 32px 20px; }
+@media (max-width: 480px) {
+    .auth-card { padding: 28px 20px; }
     .form-row { flex-direction: column; gap: 0; }
 }
 </style>

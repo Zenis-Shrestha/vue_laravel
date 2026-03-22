@@ -7,8 +7,8 @@
 
                 <!-- Brand -->
                 <router-link to="/dashboard" class="brand">
-                    <div class="brand-logo">VL</div>
-                    <span class="brand-name">Vue Laravel</span>
+                    <div class="brand-logo">LVL</div>
+                    <span class="brand-name">Learning Vue Laravel</span>
                 </router-link>
 
                 <!-- Center Links -->
@@ -24,6 +24,11 @@
                     <router-link to="/about-me" class="nav-link">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                         About Me
+                    </router-link>
+
+                           <router-link to="/chat" class="nav-link">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        Chat
                     </router-link>
                 </div>
 
@@ -74,6 +79,7 @@
         <!-- Main Content -->
         <main class="main-content">
             <router-view />
+            <AppToast />
         </main>
     </div>
 </template>
@@ -81,6 +87,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useAuthStore } from './stores/auth';
+import AppToast from './components/UI/AppToast.vue';
 
 const authStore = useAuthStore();
 const menuOpen = ref(false);
